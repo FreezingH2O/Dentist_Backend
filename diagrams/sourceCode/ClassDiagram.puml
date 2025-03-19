@@ -1,0 +1,82 @@
+@startuml
+left to right direction
+skinparam linetype ortho
+
+package "Dentist Booking"{
+
+    class "<<Application>>\nDentist Booking" as DentistBooking{}
+
+    class "<<Resource>>\nDentists" as ResourceDentists{
+        <<GET>> +getDentists(): Dentist
+        <<POST>> +createDentist(): Dentist
+    }
+
+    class "<<Resource>>\nDentist" as ResourceDentist {
+        <<GET>> +getDentist(): Dentist
+        <<PUT>> +updateDentist(): Dentist
+        <<DELETE>> +deleteDentist(): void
+    }
+
+    class "<<Representation>>\nDentist" as RepresentationDentist {
+        -dentist_ID: ObjectId
+        -name: String
+        -yearOfEx: Number
+        -areaOfExpertise: String
+        -appointments: List<RepresentationAppointment>
+    }
+
+    class "<<Resource>>\nAppointments" as ResourceAppointments{
+        <<GET>> +getAppointments(): Appointment
+        <<POST>> +addAppointment(): Appointment
+    }
+
+    class "<<Resource>>\nAppointment" as ResourceAppointment {
+        <<GET>> +getAppointment(): Appointment
+        <<PUT>> +updateAppointment(): Appointment
+        <<DELETE>> +deleteAppointment(): void
+    }
+
+    class "<<Representation>>\nAppointment" as RepresentationAppointment {
+        -appt_ID: ObjectId
+        -appDate: Date
+        -user_id: RepresentationUser.user_ID
+        -dentist: RepresentationDentist
+        -createdAt: Date
+    }
+
+     class "<<Resource>>\nUser" as ResourceUser{
+        <<POST>> +register(): User
+        <<POST>> +login(): User
+        <<GET>> +getMe(): User
+        <<GET>> +logout(): User
+    }
+
+    class "<<Representation>>\nUser" as RepresentationUser {
+        -user_ID: ObjectId
+        -name: String
+        -email: String
+        -password: String
+        -role: String
+    }
+
+}
+
+DentistBooking ..> ResourceDentists:"/dentists\n<<Path>>"
+ResourceDentists ..> ResourceDentist: "/{dentist_ID}\n<<Path>>"
+ResourceDentist ..> RepresentationDentist: "<<use>>"
+
+DentistBooking ..> ResourceAppointments:"/appointments\n<<Path>>"
+ResourceAppointments ..> ResourceAppointment: "/{appt_ID}\n<<Path>>"
+ResourceAppointment ..> RepresentationAppointment: "<<use>>"
+
+RepresentationDentist --> RepresentationAppointment : "appointments"
+RepresentationAppointment --> RepresentationDentist : "dentist"
+RepresentationAppointment --> RepresentationUser : "user_ID"
+
+DentistBooking ...> ResourceUser:"/auth/register <<Path>>"
+DentistBooking ...> ResourceUser:"/auth/login <<Path>>"
+DentistBooking ...> ResourceUser:"/auth/me <<Path>>"
+DentistBooking ...> ResourceUser:"/auth/logout <<Path>>"
+
+ResourceUser ..> RepresentationUser: "<<use>>"
+@enduml

@@ -1,0 +1,23 @@
+@startuml Manage Dentist (GET ALL)
+
+header Dentist Booking Sequence Diagram
+footer Page %page% of %lastpage%
+title "Manage Dentist (GET ALL)"
+
+participant "Client" as client
+participant "<<javaScript>>\n:server" as server
+participant "<<router>>\n:dentists" as routerDentists
+participant "<<controllers>>\n:dentists" as controllersDentists
+participant "<<model>>\n:Dentist" as modelDentist
+database "<<MongoDB>>\n:Dentists" as DentistsDatabase
+
+client->server ++:req.get('/api/v1/dentists')
+server->routerDentists ++:app.use('/api/v1/dentists',dentists)
+routerDentists -> controllersDentists ++:getDentists()
+controllersDentists->modelDentist ++:create(req.body)
+modelDentist ->DentistsDatabase ++: DentistSchema
+DentistsDatabase --> modelDentist --: Dentist
+controllersDentists <-- modelDentist --: Dentist
+controllersDentists->client --:response
+
+@enduml

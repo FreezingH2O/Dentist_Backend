@@ -1,0 +1,20 @@
+@startuml Dentist Booking System Use Case Diagram
+left to right direction
+actor "User" as user
+rectangle "Dentist Booking System" as dentistBooking {    
+    usecase "Register" as register
+    usecase "View\nDentists" as viewDentists
+    usecase "Manage\nAppointment" as manageAppt
+    usecase "Manage\nDentist" as manageDentist
+}
+
+user -- register
+user -- viewDentists
+user -- manageAppt
+
+actor "Admin" as admin
+register -- admin
+manageDentist -- admin
+manageAppt -- admin
+
+@enduml
