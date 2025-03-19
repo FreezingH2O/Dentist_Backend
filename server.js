@@ -1,5 +1,4 @@
 const express = require("express");
-const cors = require("cors");
 const dotenv = require("dotenv");
 const dentists = require("./routes/dentists");
 const auth = require("./routes/auth");
@@ -22,7 +21,6 @@ dotenv.config({ path: "./config/config.env" });
 connectDB();
 
 const app = express();
-app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 app.use(mongoSanitize());
