@@ -81,13 +81,9 @@ exports.addAppointment = async(req, res, next) => {
             });
         }
 
-        // add user ID to req.body  
         req.body.user = req.user.id;
         console.log(req.user.role);
-        // const now = new Date();
-        // const localTime = new Date(now.getTime() + 7 * 60 * 60 * 1000);  
-        // console.log("localTime  time:", loconcalTime );
-
+       
         const matchAppointment = await Appointment.findOne({ 
             apptDate: req.body.apptDate, 
             dentist: req.body.dentist 
@@ -97,7 +93,7 @@ exports.addAppointment = async(req, res, next) => {
             return res.status(400).json({ success: false, message:
                  `The Doctor is not avalible at this time that you have booked` });  
         }
-        // Check for existed appointment  
+
         const existedAppointments = await Appointment.find({ user: req.user.id,status:"upcoming" });
 
         if (existedAppointments.length >= 1 && req.user.role !== 'admin') {

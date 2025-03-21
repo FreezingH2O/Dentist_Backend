@@ -13,8 +13,8 @@ const AppointmentSchema = new mongoose.Schema({
            },
             {
                 validator: function(value) {
-                    // console.log(value.getUTCHours());
-                    return value.getUTCHours() >= 10 && value.getUTCHours() <= 20;  
+                    console.log(value.getUTCHours());
+                    return value.getUTCHours() >= 3 && value.getUTCHours() <= 17;  
                 },
                 message: 'Appointment time must be between 10:00 and 20:00.'
             },
