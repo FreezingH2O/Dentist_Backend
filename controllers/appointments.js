@@ -58,7 +58,9 @@ exports.getAppointment = async(req, res, next) => {
         const appointment = await Appointment.findById(req.params.id).populate({
             path: 'dentist',
             select: 'name yearOfEx areaOfExpertise'
-        });
+        }).populate({
+            path: 'user',
+           select: 'name tel email'});
         if (!appointment) { return res.status(404).json({ success: false, message: `No appointment with the id of ${req.params.id}` }); }
         res.status(200).json({ success: true, data: appointment });
     } catch (error) {
