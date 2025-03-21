@@ -11,28 +11,29 @@ const AppointmentSchema = new mongoose.Schema({
                 },  
                 message: 'Appointment time must be on the hour (e.g., 10:00, 11:00, etc.).'  
            },
+           {
+            validator: function(value) {
+                const now = new Date();
+                const localTime = new Date(now.getTime() + 7 * 60 * 60 * 1000);  
+
+                const appointmentTime = new Date(value);
+                
+                console.log("Current time:", localTime);
+                console.log("Appointment time:", appointmentTime);
+                if (appointmentTime < now) {
+                    return false; 
+                }
+            },
+            message: "Appointment time must be in the future."
+        },
             {
                 validator: function(value) {
                     console.log(value.getUTCHours());
-                    return value.getUTCHours() >= 3 && value.getUTCHours() <= 17;  
+                    return value.getUTCHours() >= 3 && value.getUTCHours() <= 13;  
                 },
                 message: 'Appointment time must be between 10:00 and 20:00.'
             },
-            {
-                validator: function(value) {
-                    const now = new Date();
-                    const localTime = new Date(now.getTime() + 7 * 60 * 60 * 1000);  
-
-                    const appointmentTime = new Date(value);
-                    
-                    console.log("Current time:", localTime);
-                    console.log("Appointment time:", appointmentTime);
-                    if (appointmentTime < now) {
-                        return false; 
-                    }
-                },
-                message: "Appointment time must be in the future."
-            }
+            
             
         ]
     
