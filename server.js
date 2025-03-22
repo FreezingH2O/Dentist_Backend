@@ -41,6 +41,15 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions)); 
 
+app.use((req, res, next) => {  
+  res.header("Access-Control-Allow-Origin", "https://dentist-booking-system-frontend.vercel.app");  
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");  
+  res.header("Access-Control-Allow-Headers", "Content-Type");  
+  next();  
+});  
+
+const cors = require('cors');  
+app.use(cors({ origin: 'https://dentist-booking-system-frontend.vercel.app' })); 
 
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000, 
