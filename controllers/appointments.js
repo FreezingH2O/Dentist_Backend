@@ -22,7 +22,7 @@ exports.getAppointments = async(req, res, next) => {
     } else { // if admin, can see all
         if (req.params.dentistId) {
             console.log(req.params.dentistId);
-            query = Appointment.find({ dentist: req.params.dentistId , status:"upcoming"}).sort({ apptDate: 1,status: -1}).populate({
+            query = Appointment.find({ dentist: req.params.dentistId}).sort({ apptDate: 1,status: -1}).populate({
                 path: 'dentist',
                 select: 'name yearOfEx areaOfExpertise'
             }).populate({

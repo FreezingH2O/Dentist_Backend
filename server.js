@@ -29,7 +29,7 @@ app.use(helmet());
 app.use(xss());
 app.use(hpp());
 
-// ✅ Proper CORS setup
+
 const corsOptions = {
   origin: ["https://dentist-booking-system-frontend.vercel.app", "http://localhost:3000"],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -39,7 +39,6 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-// ✅ Ensure preflight requests are handled correctly
 app.use((req, res, next) => {
   if (req.method === "OPTIONS") {
     res.header("Access-Control-Allow-Origin", "https://dentist-booking-system-frontend.vercel.app");
@@ -51,14 +50,14 @@ app.use((req, res, next) => {
   next();
 });
 
-// Rate limiter
+
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000,
   max: 100,
 });
 app.use(limiter);
 
-// Swagger docs
+
 const HOST = process.env.HOST || "http://localhost:5050";
 const swaggerOptions = {
   swaggerDefinition: {
