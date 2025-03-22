@@ -9,7 +9,7 @@ exports.getAppointments = async(req, res, next) => {
 
     // users can only see their appointments
     if (req.user.role !== 'admin') {
-        query = Appointment.find({ user: req.user.id }).sort({ status: -1, apptDate: 1}).populate({
+        query = Appointment.find({ user: req.user.id }).sort({apptDate: 1, status: -1}).populate({
             path: 'dentist',
             select: 'name yearOfEx areaOfExpertise'
         }).populate({
@@ -22,7 +22,7 @@ exports.getAppointments = async(req, res, next) => {
     } else { // if admin, can see all
         if (req.params.dentistId) {
             console.log(req.params.dentistId);
-            query = Appointment.find({ dentist: req.params.dentistId}).sort({ status: -1, apptDate: 1}).populate({
+            query = Appointment.find({ dentist: req.params.dentistId}).sort({apptDate: 1, status: -1}).populate({
                 path: 'dentist',
                 select: 'name yearOfEx areaOfExpertise'
             }).populate({
@@ -30,7 +30,7 @@ exports.getAppointments = async(req, res, next) => {
                select: 'name tel email'
            });
         } else {
-            query = Appointment.find().sort({ status: -1, apptDate: 1}).populate({
+            query = Appointment.find().sort({  apptDate: 1, status: -1}).populate({
                 path: 'dentist',
                 select: 'name yearOfEx areaOfExpertise'
             }).populate({
